@@ -16,5 +16,9 @@ export default z.object({
 	SMTP_USERNAME: z.string().nonempty(),
 	SMTP_PASSWORD: z.string().nonempty(),
 	SMTP_FROM_ADDRESS: z.string().email().nonempty(),
-	SMTP_SECURE: z.string().transform(value => value === 'true')
+	SMTP_SECURE: z.string().transform(value => value === 'true'),
+
+	TWILIO_ACCOUNT_SID: z.string().nonempty(),
+	TWILIO_AUTH_TOKEN: z.string().nonempty(),
+	TWILIO_SERVICE_SID: z.string().nonempty()
 })

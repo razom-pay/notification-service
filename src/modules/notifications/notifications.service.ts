@@ -2,15 +2,27 @@ import { Injectable } from '@nestjs/common'
 import type { OtpRequestedEvent } from '@razom-pay/contracts'
 
 import { MailService } from '../../infra/mail/mail.service'
+import { SmsService } from '../../infra/sms/sms.service'
 
 @Injectable()
 export class NotificationsService {
-	constructor(private readonly mailService: MailService) {}
+	constructor(
+		private readonly mailService: MailService,
+		private readonly smsService: SmsService
+	) {}
 
 	async sendOtp(data: OtpRequestedEvent) {
 		const { identifier, code, type } = data
 		if (type === 'email') {
 			await this.mailService.sendOtp(identifier, code)
+			return
 		}
+
+		if (type === 'phone') {
+			await this.smsService.sendOtp(identifier, code)
+			return
+		}
+
+		throw new Error(`Unsupported OTP channel: ${type}`)
 	}
 }

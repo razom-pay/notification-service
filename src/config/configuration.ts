@@ -22,6 +22,11 @@ export default () => {
 			password: env.SMTP_PASSWORD,
 			fromAddress: env.SMTP_FROM_ADDRESS,
 			secure: env.SMTP_SECURE
+		},
+		twilio: {
+			accountSid: env.TWILIO_ACCOUNT_SID,
+			authToken: env.TWILIO_AUTH_TOKEN,
+			serviceSid: env.TWILIO_SERVICE_SID
 		}
 	}
 }
