@@ -19,4 +19,14 @@ export class MailService {
 			html
 		})
 	}
+
+	async sendEmailChange(email: string, code: string) {
+		const html = this.templateService.render('email-change', { code })
+
+		await this.transporter.sendMail({
+			to: email,
+			subject: 'Ваш код підтвердження зміни електронної пошти',
+			html
+		})
+	}
 }

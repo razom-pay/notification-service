@@ -7,7 +7,7 @@ export class SmsService {
 	private readonly client: Twilio
 	private readonly serviceSid: string
 
-	constructor(configService: ConfigService) {
+	constructor(private readonly configService: ConfigService) {
 		const accountSid = configService.getOrThrow<string>('twilio.accountSid')
 		const authToken = configService.getOrThrow<string>('twilio.authToken')
 		this.serviceSid = configService.getOrThrow<string>('twilio.serviceSid')

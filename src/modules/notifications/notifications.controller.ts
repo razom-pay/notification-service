@@ -1,6 +1,10 @@
 import { Controller } from '@nestjs/common'
 import { Ctx, EventPattern, Payload, RmqContext } from '@nestjs/microservices'
-import type { OtpRequestedEvent } from '@razom-pay/contracts'
+import type {
+	EmailChangeEvent,
+	OtpRequestedEvent,
+	PhoneChangeEvent
+} from '@razom-pay/contracts'
 
 import { RmqService } from '../../infra/rmq/rmq.service'
 
@@ -26,6 +30,48 @@ export class NotificationsController {
 			if (error instanceof Error) {
 				console.error(
 					'Error processing OTP request event:',
+					error.message ?? error
+				)
+
+				this.rmqService.nack(ctx)
+			}
+		}
+	}
+
+	@EventPattern('account.phone.change')
+	async phoneChange(
+		@Payload() data: PhoneChangeEvent,
+		@Ctx() ctx: RmqContext
+	) {
+		try {
+			await this.notificationsService.sendPhoneChange(data)
+
+			this.rmqService.ack(ctx)
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(
+					'Error processing phone changed event:',
+					error.message ?? error
+				)
+
+				this.rmqService.nack(ctx)
+			}
+		}
+	}
+
+	@EventPattern('account.email.change')
+	async emailChange(
+		@Payload() data: EmailChangeEvent,
+		@Ctx() ctx: RmqContext
+	) {
+		try {
+			await this.notificationsService.sendEmailChange(data)
+
+			this.rmqService.ack(ctx)
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error(
+					'Error processing email changed event:',
 					error.message ?? error
 				)
 
