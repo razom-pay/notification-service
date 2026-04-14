@@ -3,6 +3,7 @@ version: '3.9'
 services:
     notification-service:
         container_name: notification-service
+        image: razom-pay/notification-service:dev
         build:
             context: .
             dockerfile: Dockerfile
