@@ -13,7 +13,7 @@ services:
         expose:
             - '9102'
         volumes:
-            - ../logs/notification:/var/log/services/notification
+            - ../.logs/notification:/var/log/services/notification
         networks:
             - razom-pay
 
