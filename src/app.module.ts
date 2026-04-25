@@ -23,7 +23,9 @@ import { ObservabilityModule } from './observability/observability.module'
 					target: 'pino/file',
 					options: {
 						destination:
-							'/var/log/services/notification/notification.log',
+							process.platform === 'linux'
+								? '/var/log/services/notification/notification.log'
+								: '.logs/notification/notification.log',
 						mkdir: true
 					}
 				},
